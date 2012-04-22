@@ -12,6 +12,9 @@ from Event import Event
 import matplotlib.pyplot as plt
 import numpy as np
 
+from twisted.internet import tksupport, reactor
+
+import sys
 
 class Filter():
     '''
@@ -82,13 +85,20 @@ def main():
     
     serv.on_read.add(dd)
     
-    
-    
     plt.ion()
     plt.plot()
     plt.draw()
     
-    serv.run()
+    tk_win = fig.canvas._master
+    tksupport.install(tk_win)
+    
+    def close_ev():
+        while True:
+            print 'hui'
+        
+    fig.canvas.mpl_connect('close_event', close_ev)
+    
+    reactor.run()
     
     pass
 
