@@ -9,6 +9,7 @@ from PlotLine import PlotLine
 from Axis import Axis
 from Event import Event
 from LowPassFilter import LowPassFilter
+from KalmanFilter import KalmanFilter
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -24,7 +25,8 @@ import sys
 def main():
     
     dd = DataDecoder()
-    fil = LowPassFilter()
+#    fil = LowPassFilter()
+    fil = KalmanFilter()
     serv = UdpServer()
     
     fig = plt.figure()
