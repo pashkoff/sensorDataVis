@@ -27,7 +27,7 @@ class LowPassFilter():
         
     def __on_data(self, pba):
         if self.on_data.have_any():
-            k = 0.2
+            k = 0.4
             
             a = np.array([pba.x, pba.y, pba.z])
             
