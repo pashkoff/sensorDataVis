@@ -3,6 +3,8 @@ Created on 04.03.2012
 
 @author: Pashkoff
 '''
+import sys
+
 from DataDecoder import DataDecoder
 from UdpServer import UdpServer
 from PlotLine import PlotLine
@@ -30,11 +32,11 @@ class LevelFilter():
         self.on_data = Event()
         self.prev = np.array([0,0,0])
         pass
-    
+   
     def __call__(self, data):
         self.__on_data(data)
         pass
-        
+       
     def __on_data(self, pba):
         if self.on_data.have_any():
             k = 0.2
@@ -59,6 +61,26 @@ class LevelFilter():
             self.on_data(d)
         pass
     pass
+
+class DataSaver:
+    def __init__(self, name):
+        self.name = name
+        self.d = list()
+        self.n = 0
+        self.c = 1000
+        
+    def __call__(self, data):
+        self.__on_data(data)
+        pass
+    
+    def __on_data(self, pba):
+        a = np.array([pba.x, pba.y, pba.z])
+        self.d.append(a)
+                
+        if len(self.d) == self.c:
+            np.savetxt('{0}_{1}_{2}'.format(self.name, self.n, self.n + self.c), self.d)
+            self.d = list()
+            self.n += self.c
 
 
 def main():
@@ -94,6 +116,15 @@ def main():
         
         i = i + 1
         pass
+    
+    dd_saver = DataSaver('dd')
+    dd.on_data.add(dd_saver)
+    fil_saver = DataSaver('fil')
+    fil.on_data.add(fil_saver)
+    lev_saver = DataSaver('lev')
+    level.on_data.add(lev_saver)
+
+
     
     serv.on_read.add(dd)
     
