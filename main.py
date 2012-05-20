@@ -77,7 +77,7 @@ def main():
     cols = 1
     i = 1
     for f in ('x', 'y', 'z'):
-        ax = Axis(fig, [rows, cols, i])
+        ax = Axis(fig, [rows, cols, i], dt = 1, maxt = 100)
         dd.on_data.add(ax)
         
         line = PlotLine(f,color='b')
